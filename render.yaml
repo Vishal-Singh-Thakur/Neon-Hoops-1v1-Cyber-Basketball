@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: neon-hoops-server
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: CLIENT_ORIGIN
+        value: https://neon-hoops-1v1-cyber-basketball.vercel.app

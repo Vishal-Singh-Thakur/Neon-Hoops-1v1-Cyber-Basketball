@@ -29,10 +29,12 @@ Open the Vite URL printed by Vite (normally http://localhost:5173) in two browse
 - On mobile, use the on-screen directional pad and hold/release the SHOOT button.
 
 ## Production deployment
-Deploy `client` to a static host and `server` to a Node host with WebSocket support.
-Set `VITE_SERVER_URL` in `client/.env` to the public server URL, e.g. `https://your-game-server.example`.
-Set `CLIENT_ORIGIN` on server to your frontend origin, e.g. `https://your-game.example`; set `PORT` if required by host.
-Use HTTPS/WSS in production. This MVP uses in-memory rooms and does not persist matches. Add rate limiting, validation, tests, monitoring and production security controls before public scale.
+The game server needs a long-running process with WebSocket support, so it cannot run on Vercel. Deploy the two parts separately:
+
+1. **Server on Render** — New → Blueprint, pick this repo (uses `render.yaml`). It deploys `server/` and checks `/health`. Set `CLIENT_ORIGIN` to your frontend URL (comma-separate several). Render sets `PORT` automatically.
+2. **Client on Vercel** — import the repo with the project root as Root Directory (uses `vercel.json`). Add the environment variable `VITE_SERVER_URL` = your Render URL (e.g. `https://neon-hoops-server.onrender.com`) and redeploy, since Vite bakes it in at build time.
+
+Rooms are kept in memory and not persisted. Free Render instances sleep when idle, so the first connection can take ~30-60s. Add rate limiting, monitoring and production security controls before public scale.
 
 ## Contest checklist
 The uploaded Handshake AI Skills Studio × OpenAI Multiplayer Game Challenge rules require: project title, cover image, description and project URL submitted to the “Create a Multiplayer Game” mission before the deadline. The rules score Execution, Creativity, Usefulness/Value, and Polish & Thoughtfulness at 25% each. Test the public link with two real browser sessions and only describe features that are implemented and verified. Deadline in the rules: October 30, 2026, 11:59 PM Pacific Time.
