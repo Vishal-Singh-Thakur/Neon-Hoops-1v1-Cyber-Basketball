@@ -5,5 +5,13 @@
       "root": "client",
       "framework": "vite"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "client"
+      }
+    }
+  ]
 }
